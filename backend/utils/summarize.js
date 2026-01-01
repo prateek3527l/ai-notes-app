@@ -1,8 +1,9 @@
 const fetch = require('node-fetch');
 
 const HF_API_KEY = process.env.HF_API_KEY;
+
 const MODEL_URL =
-  'https://api-inference.huggingface.co/models/facebook/bart-large-cnn';
+  'https://api-inference.huggingface.co/models/sshleifer/distilbart-cnn-12-6';
 
 async function summarizeText(text) {
   const response = await fetch(MODEL_URL, {
@@ -14,8 +15,8 @@ async function summarizeText(text) {
     body: JSON.stringify({
       inputs: text,
       parameters: {
-        max_length: 120,
-        min_length: 40,
+        max_length: 100,
+        min_length: 30,
       },
     }),
   });
@@ -24,7 +25,7 @@ async function summarizeText(text) {
 
   if (!Array.isArray(data) || !data[0]?.summary_text) {
     console.error('HF RESPONSE:', data);
-    throw new Error('Summarization failed');
+    throw new Error('HF failed');
   }
 
   return data[0].summary_text;

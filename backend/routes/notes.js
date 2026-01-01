@@ -56,6 +56,8 @@ router.delete('/:id', async (req, res) => {
 // ===============================
 // 🤖 AI SUMMARIZE (FIXED)
 // ===============================
+const { summarizeText } = require('../utils/summarize');
+
 router.post('/:id/summarize', async (req, res) => {
   try {
     const note = await Note.findOne({
@@ -67,16 +69,30 @@ router.post('/:id/summarize', async (req, res) => {
       return res.status(404).json({ error: 'Note not found' });
     }
 
-    const summary = await summarizeText(note.content);
+    let summary;
+
+    try {
+      summary = await summarizeText(note.content);
+    } catch (aiError) {
+      console.error('AI ERROR:', aiError.message);
+
+      // 👇 graceful fallback (IMPORTANT)
+      return res.status(200).json({
+        summary: '⚠️ AI is currently busy. Please try again in a moment.',
+      });
+    }
 
     note.summary = summary;
     await note.save();
 
     res.json({ summary });
   } catch (err) {
-    console.error('AI ERROR:', err.message);
-    res.status(500).json({ error: 'AI summarization failed' });
+    console.error('SERVER ERROR:', err);
+    res.status(500).json({
+      summary: '⚠️ Internal server error. Try again later.',
+    });
   }
 });
+
 
 module.exports = router;

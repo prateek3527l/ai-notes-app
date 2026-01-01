@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Notes App</title>
+
+  <!-- Global styles (used everywhere) -->
+  <link rel="stylesheet" href="css/global.css">
+
+  <!-- Index page only styles -->
+  <link rel="stylesheet" href="css/index.css">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+  <div class="container">
+    <header class="app-header">
+      <div class="logo">
+        <i class="fas fa-robot"></i>
+        <h1>AI Notes</h1>
+      </div>
+      <p class="tagline">Smart notes powered by artificial intelligence</p>
+    </header>
+
+    <main class="auth-container">
+      <div class="auth-card">
+        <div class="auth-tabs">
+          <button class="auth-tab active" data-tab="register">Register</button>
+          <button class="auth-tab" data-tab="login">Login</button>
+        </div>
+
+        <div class="auth-content">
+          <div class="auth-form active" id="registerSection">
+            <h2><i class="fas fa-user-plus"></i> Create Account</h2>
+            <p class="form-description">Register to start creating AI-powered notes</p>
+            <form id="registerForm">
+              <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="regEmail" placeholder="Email address" required />
+              </div>
+              <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="regPassword" placeholder="Create a password" required />
+              </div>
+              <button type="submit" class="btn-primary">
+                <i class="fas fa-user-plus"></i> Register Now
+              </button>
+            </form>
+            <div class="form-footer">
+              <p>Already have an account? <a href="#" class="switch-link" data-target="login">Sign in here</a></p>
+            </div>
+          </div>
+
+          <div class="auth-form" id="loginSection">
+            <h2><i class="fas fa-sign-in-alt"></i> Welcome Back</h2>
+            <p class="form-description">Login to access your notes</p>
+            <form id="loginForm">
+              <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="loginEmail" placeholder="Email address" required />
+              </div>
+              <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="loginPassword" placeholder="Your password" required />
+              </div>
+              <button type="submit" class="btn-primary">
+                <i class="fas fa-sign-in-alt"></i> Login
+              </button>
+            </form>
+            <div class="form-footer">
+              <p>Don't have an account? <a href="#" class="switch-link" data-target="register">Register here</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="features">
+        <div class="feature">
+          <i class="fas fa-brain"></i>
+          <h3>AI-Powered</h3>
+          <p>Smart summaries and organization</p>
+        </div>
+        <div class="feature">
+          <i class="fas fa-sync-alt"></i>
+          <h3>Sync Everywhere</h3>
+          <p>Access notes on all devices</p>
+        </div>
+        <div class="feature">
+          <i class="fas fa-shield-alt"></i>
+          <h3>Secure</h3>
+          <p>Your data is encrypted and safe</p>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>AI Notes App &copy; 2023. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // Tab switching functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const tabs = document.querySelectorAll('.auth-tab');
+      const forms = document.querySelectorAll('.auth-form');
+      const switchLinks = document.querySelectorAll('.switch-link');
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          const target = this.getAttribute('data-tab');
+          
+          // Update tabs
+          tabs.forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+          
+          // Update forms
+          forms.forEach(form => form.classList.remove('active'));
+          document.getElementById(`${target}Section`).classList.add('active');
+        });
+      });
+
+      switchLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const target = this.getAttribute('data-target');
+          
+          // Update tabs
+          tabs.forEach(t => t.classList.remove('active'));
+          document.querySelector(`.auth-tab[data-tab="${target}"]`).classList.add('active');
+          
+          // Update forms
+          forms.forEach(form => form.classList.remove('active'));
+          document.getElementById(`${target}Section`).classList.add('active');
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -56,7 +56,7 @@ router.delete('/:id', async (req, res) => {
 // ===============================
 // 🤖 AI SUMMARIZE (FIXED)
 // ===============================
-const { summarizeText } = require('../utils/summarize');
+
 
 router.post('/:id/summarize', async (req, res) => {
   try {
